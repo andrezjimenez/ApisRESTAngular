@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Product } from '../../models/product.model';
+import { CreateProductDTO, Product } from '../../models/product.model';
 
 import { StoreService } from '../../services/store.service';
 import { ProductsService } from '../../services/products.service';
@@ -59,6 +59,20 @@ export class ProductsComponent implements OnInit {
       this.toggleProductDetail();
     });
     // console.log(id);
+  }
+  createNewProduct (){
+    const product: CreateProductDTO = {
+      title: 'Nuevo',
+      description : 'asdasd',
+      images: [''],
+      price: 4000,
+      categoryId: 2,
+    }
+    this.productsService.create(product)
+    .subscribe(data => {
+      this.products.unshift(data);
+      
+    });
   }
 
 }
