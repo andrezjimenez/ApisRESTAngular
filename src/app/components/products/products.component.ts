@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { switchMap } from 'rxjs/operators'
 import { CreateProductDTO, Product ,UpdateroductDTO} from '../../models/product.model';
 
 import { StoreService } from '../../services/store.service';
@@ -28,8 +28,11 @@ export class ProductsComponent implements OnInit {
     description: ''
   }
 
+
   limit = 10 ;
   offset = 0;
+
+  statusDetail: 'loading' | 'succes' | 'error' | 'init' = 'init'
 
   constructor(
     private storeService: StoreService,
@@ -42,6 +45,7 @@ export class ProductsComponent implements OnInit {
     this.productsService.getProductsByPage(10,0)
     .subscribe(data => {
       this.products = data;
+      this.offset += this.limit;
     });
   }
 
@@ -55,14 +59,32 @@ export class ProductsComponent implements OnInit {
   }
 
   onShowDetail(id : string){
+    this.statusDetail = 'loading'
     this.productsService.getProduct(id)
     .subscribe(data => {
       console.log(data);
       this.productChosen = data;
       this.toggleProductDetail();
+      this.statusDetail = 'succes'
+    },error => {
+      console.log(error);
+      this.statusDetail = 'error';
     });
     // console.log(id);
   }
+
+  readAndUpdate(id : string){
+
+    this.productsService.getProduct(id).pipe(
+      switchMap((product)=> {
+        return this.productsService.update(product.id,{title: 'change'})
+      })
+    ).subscribe( data => {
+      console.log(data);
+    });
+    
+  }
+
   createNewProduct (){
     const product: CreateProductDTO = {
       title: 'Nuevo',
@@ -104,7 +126,7 @@ export class ProductsComponent implements OnInit {
   loadMore(){
     this.productsService.getProductsByPage(this.limit,this.offset)
     .subscribe(data => {
-      this.products = data;
+      this.products = this.products.concat(data);
       this.offset += this.limit;
     });
   }

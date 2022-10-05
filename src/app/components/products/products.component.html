@@ -1,5 +1,6 @@
 <button (click)="toggleProductDetail()">clic</button>
 <button (click)="createNewProduct()">create</button>
+<button (click)="onShowDetail('12312')">error</button>
 <div class="products--grid">
   <app-product
     [product]="product"
@@ -9,6 +10,7 @@
   ></app-product>
 </div>
 <div class="product-detail" [class.active]="showProductsDetails">
+  {{statusDetail}}
   <div *ngIf="productChosen">
     <button (click)="toggleProductDetail()">close
     </button>
