@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { switchMap } from 'rxjs/operators'
+import { zip } from 'rxjs'
 import { CreateProductDTO, Product ,UpdateroductDTO} from '../../models/product.model';
 
 import { StoreService } from '../../services/store.service';
@@ -82,6 +83,15 @@ export class ProductsComponent implements OnInit {
     ).subscribe( data => {
       console.log(data);
     });
+    zip
+      (this.productsService.getProduct(id),
+      this.productsService.update(id,{title: 'zip'})
+    ).subscribe(response => {
+      const read = response[0];
+      const update = response[1];
+    }
+
+    )
     
   }
 
