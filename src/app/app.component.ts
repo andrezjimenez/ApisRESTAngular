@@ -13,7 +13,7 @@ export class AppComponent {
   showImg = true;
 
   constructor(
-     private AuthService : AuthService,
+     private authService : AuthService,
      private UsersService : UsersService,
   ){  }
 
@@ -38,9 +38,9 @@ export class AppComponent {
   }
 
   login(){
-    this.AuthService.login('andru456@hotmail.com','123456')
+    this.authService.login('andru456@hotmail.com','123456')
     .subscribe(rta => {
-      console.log(rta.acces_token);
+      console.log(rta);
     })
   }
 

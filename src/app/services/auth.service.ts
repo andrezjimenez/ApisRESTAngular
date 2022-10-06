@@ -14,11 +14,11 @@ export class AuthService {
   ) { }
 
     login(email: string, password : string){
-      return this.http.post<Auth>(`${this.apiURL}/login`,{email,password})
+      return this.http.post<Auth>(`${this.apiURL}/login`,{email, password});
     }
     // --token: string
     profile(){
-      return this.http.get(`${this.apiURL}/profile`)
+      return this.http.get(`${this.apiURL}/profile`);
     }
 }
  
