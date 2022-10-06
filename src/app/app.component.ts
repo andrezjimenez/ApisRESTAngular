@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from './services/auth.service'
 import { UsersService } from './services/users.service'
 import { Auth } from './models/auth.model';
+import { User } from './models/user.model';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,11 @@ export class AppComponent {
   imgParent = '';
   showImg = true;
 
+  token = '';
+
   constructor(
      private authService : AuthService,
-     private UsersService : UsersService,
+     private usersService : UsersService,
   ){  }
 
 
@@ -27,9 +30,9 @@ export class AppComponent {
   }
 
   createUser(){
-    this.UsersService.create({
+    this.usersService.create({
       name: 'Andres',
-      email: 'andru456@hotmail.com',
+      email: '1@hotmail.com',
       password: '123456'
     })
     .subscribe(rta => {
@@ -38,10 +41,24 @@ export class AppComponent {
   }
 
   login(){
-    this.authService.login('andru456@hotmail.com','123456')
+    this.authService.login('1@hotmail.com','123456')
     .subscribe(rta => {
       console.log(rta);
-    })
+      this.token = rta.access_token;
+      console.log(this.token);
+    });
   }
 
+  getProfile(){
+    this.authService.profile(this.token)
+    .subscribe(profile =>{
+      console.log(profile);
+    })
+  }
+  getProfile2(){
+    this.authService.getProfile(this.token)
+    .subscribe(profile =>{
+    console.log(profile);
+  })
+}
 }
